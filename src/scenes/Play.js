@@ -60,13 +60,13 @@ class Play extends Phaser.Scene {
             game.config.width/2,
             game.config.height - borderUISize - borderPadding,
             'rocket'
-            ).setOrigin(0.5, 1);
+            ).setOrigin(0.5, 0);
         
         // add spaceships (x3)
         this.ship01 = new Spaceship(
             this,
             game.config.width + borderUISize*10.75,
-            borderUISize*4,
+            borderUISize*5,
             'spaceship',
             0,
             30

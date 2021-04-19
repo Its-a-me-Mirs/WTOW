@@ -136,8 +136,8 @@ class Menu extends Phaser.Scene {
                 // hard mode settings
                 game.settings = {
                     spaceshipSpeed: 4,
-                    gameTimer: 45000
-                    //gameTimer: 1000 // testing sound...
+                    //gameTimer: 45000
+                    gameTimer: 1000 // testing sound...
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('toNextScene');

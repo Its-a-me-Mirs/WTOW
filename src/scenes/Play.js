@@ -91,6 +91,7 @@ class Play extends Phaser.Scene {
         //defining keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
@@ -118,6 +119,24 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
+        
+        //displaying text
+        let textConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            //backgroundColor: '#F3B141',
+            //color: '#BF340F',
+            color: 'white',
+            align: 'center',
+            padding: {
+                top: 5,
+                left: 10,
+                right: 10,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+        
         this.scoreLeft = this.add.text(
             borderUISize + borderPadding,
             borderUISize + borderPadding*2,
@@ -130,31 +149,35 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.gameOver = true;
+            // black tint
+            this.add.rectangle(
+                0, 0, 640, 480, 0x00000, 45
+            ).setOrigin(0,0);
+            
             this.add.text(
                 game.config.width/2,
-                game.config.height/2,
+                game.config.height/2 - borderPadding*4,
                 'GAME OVER',
-                scoreConfig
+                textConfig
                 ).setOrigin(0.5);
+
             this.add.text(
                 game.config.width/2,
-                game.config.height/2 + 64,
-                'Press (R) to Restart or LEFT for Menu',
-                scoreConfig
+                game.config.height/2 + borderUISize*2,
+                'Press (P) to Play again\nOR\nPress (R) to Exit to Menu',
+                textConfig
                 ).setOrigin(0.5);
         }, null, this);
-
-
     }
 
     update() {
         // to restart
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyP)) {
             this.scene.restart();
         }
 
         // to menu
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             soundVar = false;
             
             // momentary screen

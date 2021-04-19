@@ -16,6 +16,12 @@ class Play extends Phaser.Scene {
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png',
         {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+
+        // sound
+        this.load.audio('sfx_select', './assets/assets_blip_select12.wav');
+        this.load.audio('sfx_explosion', './assets/assets_explosion38.wav');
+        this.load.audio('sfx_rocket', './assets/assets_rocket_shot.wav');
+        this.load.audio('standby', './assets/standbyTune.wav');
     }
 
     create() {
@@ -123,10 +129,10 @@ class Play extends Phaser.Scene {
         //displaying text
         let textConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '35px',
             //backgroundColor: '#F3B141',
             //color: '#BF340F',
-            color: 'white',
+            color: 'orange',
             align: 'center',
             padding: {
                 top: 5,
@@ -148,56 +154,39 @@ class Play extends Phaser.Scene {
         // timer in seconds until auto game ends
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.gameOver = true;
-            // // black tint
-            // this.add.rectangle(
-            //     0, 0, 640, 480, 0x00000, 45
-            // ).setOrigin(0,0);
-            
-            // this.add.text(
-            //     game.config.width/2,
-            //     game.config.height/2 - borderPadding*4,
-            //     'GAME OVER',
-            //     textConfig
-            //     ).setOrigin(0.5);
 
-            // this.add.text(
-            //     game.config.width/2,
-            //     game.config.height/2 + borderUISize*2,
-            //     'Press (P) to Play again\nOR\nPress (R) to Exit to Menu',
-            //     textConfig
-            //     ).setOrigin(0.5);
+            this.gameOver = true;
+            //black tint over the screen
+            this.add.rectangle(
+                0, 0, 640, 480, 0x00000, 75
+            ).setOrigin(0,0);
+
+            // text
+            this.add.text(
+                game.config.width/2,
+                game.config.height/2,
+                'Times Up!',
+                textConfig
+            ).setOrigin(0.5);
+
         }, null, this);
     }
 
     update() {
-        // to restart
-        // if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyP)) {
-        //     this.scene.restart();
-        // }
-
-        // // to menu
-        // if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-        //     soundVar = false;
-            
-        //     // momentary screen
-        //     this.add.rectangle(
-        //         0, 0, 640, 480, 0x000000
-        //     ).setOrigin(0,0);
-        //     // gameOver music
-        //     this.sound.play('gameOver');
-        //     this.time.addEvent({
-        //         delay: 5000,
-        //         callback:()=> {
-        //             this.scene.start("menuScene");
-        //         },
-        //     })
-        // }
-
         //switches to planets scene
         if (this.gameOver) {
+            finScore = this.p1Score;
+            if (soundVar == true) {
+                this.sound.play('standby');
+            }
             soundVar = false;
-            this.scene.start('planetScene');
+            this.time.addEvent({
+                delay: 10500,
+                callback:()=> {
+                    this.sound.get('standby').destroy();
+                    this.scene.start("planetScene");
+                },
+            })
         }
 
         this.starfield.tilePositionX -= 3;
@@ -207,6 +196,13 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+
+            if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+                this.sound.play('sfx_select');
+            }
+            if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+                this.sound.play('sfx_select');
+            }
         }
 
         // check collisions
@@ -238,15 +234,16 @@ class Play extends Phaser.Scene {
 
     // exploding event
     shipExplode(ship) {
+        this.sound.play('sfx_explosion');
         ship.alpha = 0;
 
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0,0);
         boom.anims.play('explode');
+        
         boom.on('animationcomplete', () => {
-            ship.reset();
-            this.sound.play('sfx_explosion');
-            ship.alpha = 1;
             boom.destroy();
+            ship.reset();
+            ship.alpha = 1;
         });
 
         // adding and changing scores

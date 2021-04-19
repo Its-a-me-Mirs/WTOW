@@ -16,3 +16,6 @@ let soundVar = false;
 // set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
+
+// display score at end game
+let finScore = 0;

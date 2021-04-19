@@ -102,19 +102,39 @@ class Menu extends Phaser.Scene {
             // plays sounds with F, LEFT, RIGHT key
             if (Phaser.Input.Keyboard.JustDown(keyF)) {
                 this.sound.play('sfx_explosion');
+                this.time.addEvent( {
+                    delay: 500,
+                    callback:() => {
+                        this.sound.get('sfx_explosion').destroy();
+                    },
+                })   
             }
             if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
                 this.sound.play('sfx_select');
+                this.time.addEvent( {
+                    delay: 500,
+                    callback:() => {
+                        this.sound.get('sfx_select').destroy();
+                    },
+                })   
             }
             if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
                 this.sound.play('sfx_select');
+                this.time.addEvent( {
+                    delay: 500,
+                    callback:() => {
+                        this.sound.get('sfx_select').destroy();
+                    },
+                })   
             }
 
             if (Phaser.Input.Keyboard.JustDown(keyO)) {
             // easy mode settings
                 game.settings = {
                     spaceshipSpeed: 2,
-                    gameTimer: 60000    
+                    // testing speed...
+                    //gameTimer: 60000
+                    gameTimer: 1000,    
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('novice');
@@ -127,6 +147,7 @@ class Menu extends Phaser.Scene {
                 this.time.addEvent( {
                     delay: 2800,
                     callback:() => {
+                        this.sound.get('novice').destroy();
                         this.scene.start('playScene');
                     },
                 })   
@@ -136,8 +157,9 @@ class Menu extends Phaser.Scene {
                 // hard mode settings
                 game.settings = {
                     spaceshipSpeed: 4,
+                    // testing sound...
                     //gameTimer: 45000
-                    gameTimer: 1000 // testing sound...
+                    gameTimer: 1000 
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('toNextScene');
@@ -150,6 +172,7 @@ class Menu extends Phaser.Scene {
                 this.time.addEvent( {
                     delay: 2800,
                     callback:() => {
+                        this.sound.get('toNextScene').destroy();
                         this.scene.start('playScene');
                     },
                 })   

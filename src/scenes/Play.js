@@ -101,6 +101,7 @@ class Play extends Phaser.Scene {
             {start: 0, end: 9, first: 0}), frameRate: 30
         });
         
+        // fast special ship
         this.ship04 = new Spaceship(
             this,
             game.config.width*1.65,
@@ -217,17 +218,17 @@ class Play extends Phaser.Scene {
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+        if (this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
+            this.delayExplode(this.ship01);
         }
         if (this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship01)) {
+        if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
+            this.shipExplode(this.ship03);
         }
         if(this.checkCollision(this.p1Rocket, this.ship04)) {
             this.p1Rocket.reset();
@@ -248,6 +249,30 @@ class Play extends Phaser.Scene {
     }
 
     // exploding event
+    delayExplode(ship) {
+        this.sound.play('sfx_explosion');
+        ship.alpha = 0;
+
+        let boom = this.add.sprite(ship.x, ship.y, 'explode').setOrigin(0,0);
+        boom.anims.play('explode');
+        
+        boom.on('animationcomplete', () => {
+            boom.destroy();
+            // delay re-entry of the special ship
+            this.time.addEvent({
+                delay: 3500,
+                paused: false,
+                callback:()=> {
+                    ship.reset();
+                    ship.alpha = 1;
+                },
+            })
+        });
+        // adding and changing scores
+        this.p1Score += ship.points;
+        this.scoreLeft.text = this.p1Score;
+    }
+
     shipExplode(ship) {
         this.sound.play('sfx_explosion');
         ship.alpha = 0;
@@ -260,7 +285,6 @@ class Play extends Phaser.Scene {
             ship.reset();
             ship.alpha = 1;
         });
-
         // adding and changing scores
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;

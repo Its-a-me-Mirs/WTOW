@@ -13,12 +13,12 @@ class Planets extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
+        soundVar = true;
+
         //displaying text
         let textConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            //backgroundColor: '#F3B141',
-            //color: '#BF340F',
             color: 'white',
             align: 'center',
             padding: {
@@ -34,8 +34,6 @@ class Planets extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            //backgroundColor: '#F3B141',
-            //color: '#BF340F',
             color: 'white',
             align: 'right',
             padding: {
@@ -47,35 +45,31 @@ class Planets extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        // timer in seconds until auto game ends
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            // black tint
-            this.add.rectangle(
-                0, 0, 640, 480, 0x00000, 45
-            ).setOrigin(0,0);
-            
-            this.add.text(
-                game.config.width/2,
-                game.config.height/2 - borderUISize*3,
-                'GAME OVER',
-                textConfig
-                ).setOrigin(0.5);
+        // black
+        this.add.rectangle(
+            0, 0, 640, 480, 0x00000, 45
+        ).setOrigin(0,0);
+        
+        this.add.text(
+            game.config.width/2,
+            game.config.height/2 - borderUISize*3,
+            'GAME OVER',
+            textConfig
+            ).setOrigin(0.5);
 
-            this.add.text(
-                game.config.width/2,
-                game.config.height/2,
-                'Press (P) to Play again\nOR\nPress (R) to Exit to Menu',
-                textConfig
-                ).setOrigin(0.5);
-            
-            this.add.text(
-                game.config.width/2,
-                game.config.height/2 + borderUISize*6,
-                "End Score: " + finScore,
-                scoreConfig
-                ).setOrigin(0.5);
-        }, null, this);
-        soundVar = true;
+        this.add.text(
+            game.config.width/2,
+            game.config.height/2,
+            'Press (P) to Play again\nOR\nPress (R) to Exit to Menu',
+            textConfig
+            ).setOrigin(0.5);
+        
+        this.add.text(
+            game.config.width/2,
+            game.config.height/2 + borderUISize*6,
+            "End Score: " + finScore,
+            scoreConfig
+            ).setOrigin(0.5);
     }
 
     update() {
@@ -86,7 +80,7 @@ class Planets extends Phaser.Scene {
 
         // to menu
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
-            // momentary screen
+            // momentary black screen
             this.add.rectangle(
                 0, 0, 640, 480, 0x000000
             ).setOrigin(0,0);
@@ -99,6 +93,7 @@ class Planets extends Phaser.Scene {
             soundVar = false;
             this.time.addEvent({
                 delay: 5000,
+                paused: false,
                 callback:()=> {
                     this.sound.get('gameOver').destroy();
                     this.scene.start("menuScene");

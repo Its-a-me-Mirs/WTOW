@@ -10,11 +10,10 @@ class Play extends Phaser.Scene {
         this.load.audio('gameOver', './assets/audio3.mp3');
 
         // load images and tile sprites
-        this.load.image('starfield', './assets/starfield.png');
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         // load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png',
+        this.load.spritesheet('enemy', './assets/enemy.png',
         {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
 
         // sound
@@ -93,6 +92,23 @@ class Play extends Phaser.Scene {
             0,
             10
             ).setOrigin(0,0);
+
+        //animation configuration
+        this.anims.create({
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('enemy',
+            {start: 0, end: 9, first: 0}), frameRate: 30
+        });
+        
+        // testing new ships ///////////////////////make new ship class//////////
+        this.ship04 = new Spaceship(
+            this,
+            game.config.width + borderUISize + borderPadding,
+            borderUISize*9 + borderPadding*2,
+            'enemy',
+            0,
+            5
+            ).setOrigin(0,0);
         
         //defining keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -100,13 +116,6 @@ class Play extends Phaser.Scene {
         keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-        //animation configuration
-        this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion',
-            {start: 0, end: 9, first: 0}), frameRate: 30
-        });
 
         //intitializing score
         this.p1Score = 0;
@@ -181,7 +190,8 @@ class Play extends Phaser.Scene {
             }
             soundVar = false;
             this.time.addEvent({
-                delay: 10500,
+                delay: 11000,
+                paused: false,
                 callback:()=> {
                     this.sound.get('standby').destroy();
                     this.scene.start("planetScene");
@@ -196,6 +206,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+            this.ship04.update();
 
             if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
                 this.sound.play('sfx_select');
@@ -218,6 +229,10 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
+        if(this.checkCollision(this.p1Rocket, this.ship04)) {
+            this.p1Rocket.reset();
+            this.shipExplode(this.ship04);
+        }
     }
 
     checkCollision(rocket, ship) {
@@ -237,7 +252,7 @@ class Play extends Phaser.Scene {
         this.sound.play('sfx_explosion');
         ship.alpha = 0;
 
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0,0);
+        let boom = this.add.sprite(ship.x, ship.y, 'explode').setOrigin(0,0);
         boom.anims.play('explode');
         
         boom.on('animationcomplete', () => {

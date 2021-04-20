@@ -71,7 +71,7 @@ class Menu extends Phaser.Scene {
             game.config.height/2 - borderUISize - borderPadding*4,
             'use (🠔) LEFT and (🠖) RIGHT to move\nAND\n(F) to Fire',
             menuConfig
-            ).setOrigin(0.5);
+        ).setOrigin(0.5);
         
         //menuConfig.backgroundColor = '#45b450';
         //menuConfig.color = 'white';
@@ -81,7 +81,7 @@ class Menu extends Phaser.Scene {
             game.config.height/2 + borderUISize*3 + borderPadding,
             'To Begin:\n\nPress (O) for Novice\n\nOR\n\nPress (P) for Expert',
             menuConfig
-            ).setOrigin(0.5);
+        ).setOrigin(0.5);
         
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -104,6 +104,7 @@ class Menu extends Phaser.Scene {
                 this.sound.play('sfx_explosion');
                 this.time.addEvent( {
                     delay: 500,
+                    paused: false,
                     callback:() => {
                         this.sound.get('sfx_explosion').destroy();
                     },
@@ -113,6 +114,7 @@ class Menu extends Phaser.Scene {
                 this.sound.play('sfx_select');
                 this.time.addEvent( {
                     delay: 500,
+                    paused: false,
                     callback:() => {
                         this.sound.get('sfx_select').destroy();
                     },
@@ -122,6 +124,7 @@ class Menu extends Phaser.Scene {
                 this.sound.play('sfx_select');
                 this.time.addEvent( {
                     delay: 500,
+                    paused: false,
                     callback:() => {
                         this.sound.get('sfx_select').destroy();
                     },
@@ -134,10 +137,11 @@ class Menu extends Phaser.Scene {
                     spaceshipSpeed: 2,
                     // testing speed...
                     //gameTimer: 60000
-                    gameTimer: 1000,    
+                    gameTimer: 1000    
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('novice');
+                
                 // momentary blue screen
                 this.add.rectangle(
                     0, 0, 640, 480, 0x200052
@@ -146,6 +150,7 @@ class Menu extends Phaser.Scene {
                 soundVar = true;
                 this.time.addEvent( {
                     delay: 2800,
+                    paused: false,
                     callback:() => {
                         this.sound.get('novice').destroy();
                         this.scene.start('playScene');
@@ -158,11 +163,12 @@ class Menu extends Phaser.Scene {
                 game.settings = {
                     spaceshipSpeed: 4,
                     // testing sound...
-                    //gameTimer: 45000
-                    gameTimer: 1000 
+                    gameTimer: 45000
+                    //gameTimer: 1500 
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('toNextScene');
+                
                 // momentary red screen
                 this.add.rectangle(
                     0, 0, 640, 480, 0x440000
@@ -171,11 +177,12 @@ class Menu extends Phaser.Scene {
                 soundVar = true;
                 this.time.addEvent( {
                     delay: 2800,
+                    paused: false,
                     callback:() => {
                         this.sound.get('toNextScene').destroy();
-                        this.scene.start('playScene');
+                        this.scene.start('playScene'); 
                     },
-                })   
+                })  
             }
         }
         this.starfield.tilePositionX -= 2;

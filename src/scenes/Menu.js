@@ -73,9 +73,6 @@ class Menu extends Phaser.Scene {
             menuConfig
         ).setOrigin(0.5);
         
-        //menuConfig.backgroundColor = '#45b450';
-        //menuConfig.color = 'white';
-        
         this.add.text(
             game.config.width/2,
             game.config.height/2 + borderUISize*3 + borderPadding,
@@ -136,8 +133,8 @@ class Menu extends Phaser.Scene {
                 game.settings = {
                     spaceshipSpeed: 2,
                     // testing speed...
-                    //gameTimer: 60000
-                    gameTimer: 1000    
+                    gameTimer: 60000
+                    //gameTimer: 2000    
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('novice');
@@ -163,8 +160,8 @@ class Menu extends Phaser.Scene {
                 game.settings = {
                     spaceshipSpeed: 4,
                     // testing sound...
+                    //gameTimer: 1000
                     gameTimer: 45000
-                    //gameTimer: 1500 
                 }
                 this.sound.get('mainTune').destroy();
                 this.sound.play('toNextScene');

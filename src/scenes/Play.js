@@ -191,7 +191,9 @@ class Play extends Phaser.Scene {
             }
             soundVar = false;
             this.time.addEvent({
+                // for testing change this///////////////////
                 delay: 11000,
+                //delay: 5000,
                 paused: false,
                 callback:()=> {
                     this.sound.get('standby').destroy();

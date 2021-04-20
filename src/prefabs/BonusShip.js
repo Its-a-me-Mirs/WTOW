@@ -3,10 +3,11 @@ class BonusShip extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
         this.points = pointValue + 10;
-        this.moveSpeed = game.settings.spaceshipSpeed + 2;
+        this.moveSpeed = game.settings.spaceshipSpeed + 1.5;
     }
 
     update() {
+        console.log(this.moveSpeed);
         // move left
         this.x -= this.moveSpeed
 

@@ -55,7 +55,8 @@ class Play extends Phaser.Scene {
         this.add.rectangle(
             borderUISize,
             borderUISize + borderPadding *1.5,
-            game.config.width - borderUISize * 2, borderUISize *1.5,
+            game.config.width - borderUISize * 2,
+            borderUISize *1.5,
             0x00dd00
             ).setOrigin(0,0);
         
@@ -68,7 +69,7 @@ class Play extends Phaser.Scene {
             ).setOrigin(0.5, 0);
         
         // add spaceships (x3)
-        this.ship01 = new Spaceship(
+        this.ship01 = new BonusShip(
             this,
             game.config.width + borderUISize*10.75,
             borderUISize*5,
@@ -100,11 +101,10 @@ class Play extends Phaser.Scene {
             {start: 0, end: 9, first: 0}), frameRate: 30
         });
         
-        // testing new ships ///////////////////////make new ship class//////////
         this.ship04 = new Spaceship(
             this,
-            game.config.width + borderUISize + borderPadding,
-            borderUISize*9 + borderPadding*2,
+            game.config.width*1.65,
+            borderUISize*9,
             'enemy',
             0,
             5

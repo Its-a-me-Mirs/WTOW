@@ -16,6 +16,9 @@ class Play extends Phaser.Scene {
         // load spritesheet
         this.load.spritesheet('enemy', './assets/enemy.png',
         {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('pop', './assets/explosion.png',
+        {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+
 
         // sound
         this.load.audio('sfx_select', './assets/assets_blip_select12.wav');
@@ -107,6 +110,11 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('enemy',
+            {start: 0, end: 9, first: 0}), frameRate: 30
+        });
+        this.anims.create({
+            key: 'explodeBonus',
+            frames: this.anims.generateFrameNumbers('pop',
             {start: 0, end: 9, first: 0}), frameRate: 30
         });
         
@@ -254,8 +262,8 @@ class Play extends Phaser.Scene {
         this.sound.play('sfx_explosion');
         ship.alpha = 0;
 
-        let boom = this.add.sprite(ship.x, ship.y, 'explode').setOrigin(0,0);
-        boom.anims.play('explode');
+        let boom = this.add.sprite(ship.x, ship.y, 'explodeBonus').setOrigin(0,0);
+        boom.anims.play('explodeBonus');
         
         boom.on('animationcomplete', () => {
             boom.destroy();

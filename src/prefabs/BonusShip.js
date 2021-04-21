@@ -7,7 +7,6 @@ class BonusShip extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        console.log(this.moveSpeed);
         // move left
         this.x -= this.moveSpeed
 
